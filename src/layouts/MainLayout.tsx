@@ -1,13 +1,19 @@
-import { Navbar, SideNav } from "@/components";
-import React, { Children } from "react";
+import { HeaderLayout, Navbar, SideNav } from "@/components";
+import React, { ReactNode } from "react";
 
-function MainLayout({ children }) {
+interface Props {
+  children?: ReactNode;
+}
+
+function MainLayout({ children }: Props) {
   return (
     <>
       <Navbar />
-      <div className="p-10 bg-red-500 grid grid-cols-12 gap-4 w-full">
-        {children}
-        <div className="col-span-3">
+      {/* {children} */}
+      <div className="p-5">
+        <HeaderLayout />
+        <div className="grid grid-cols-12 gap-4">
+          {children}
           <SideNav />
         </div>
       </div>
