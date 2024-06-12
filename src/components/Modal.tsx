@@ -1,7 +1,7 @@
 import { Transition } from "@headlessui/react";
 import React from "react";
 
-function Modal(props) {
+function Modal(props: any) {
   const { onClick, children, isOpen, ...rest } = props;
   return (
     <Transition
