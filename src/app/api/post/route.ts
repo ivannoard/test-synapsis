@@ -1,6 +1,6 @@
 import API from "@/services/axiosInstance";
 import { getRandomCategory } from "@/utils";
-import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 
 type ResponseDataType = {
   id: number;
@@ -10,7 +10,7 @@ type ResponseDataType = {
   category: string;
 };
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url as string);
   const page = searchParams.get("page");
 

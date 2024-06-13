@@ -1,8 +1,7 @@
 import API from "@/services/axiosInstance";
-import axios from "axios";
-import { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url as string);
   const id = searchParams.get("post_id");
   const response = await API.get(`/public/v2/posts/${id}/comments`);
