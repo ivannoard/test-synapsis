@@ -24,22 +24,23 @@ function HeaderLayout() {
     slidesToScroll: 1,
   };
 
-  async function getData() {
-    try {
-      const response = await API.get(`/api/post?page=1`);
-      if (response.status === 200) {
-        setData(response.data.data);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // async function getData() {
+  //   try {
+  //     const response = await API.get(`/api/post?page=1`);
+  //     console.log(response);
+  //     if (response.status === 200) {
+  //       setData(response.data.data);
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
-  React.useEffect(() => {
-    if (route === "/") {
-      getData();
-    }
-  }, [route]);
+  // React.useEffect(() => {
+  //   if (route === "/") {
+  //     getData();
+  //   }
+  // }, [route]);
 
   return (
     <>
