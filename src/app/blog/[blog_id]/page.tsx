@@ -4,6 +4,9 @@ import { getRandomCategory } from "@/utils";
 import axios from "axios";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
+
 export default async function page({
   params,
 }: {
