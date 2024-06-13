@@ -9,7 +9,7 @@ export default async function page({
 }: {
   params: { blog_id: string };
 }) {
-  const response = await API.get(
+  const response = await axios.get(
     `${process.env.NEXT_PUBLIC_URL}/public/v2/posts/${Number(params.blog_id)}`
   );
   response.data.category = getRandomCategory();
