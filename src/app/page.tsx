@@ -1,38 +1,13 @@
-"use client";
-import { Card, SideNav } from "@/components";
-import Image from "next/image";
-import React from "react";
+import { Home } from "@/components";
+import { getRandomCategory } from "@/utils";
+import axios from "axios";
 
-function Home() {
-  React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  return (
-    <>
-      <div className="mt-4 col-span-12 lg:col-span-9">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-        </div>
-      </div>
-    </>
-    // <div className="p-10 grid grid-cols-12 gap-4">
-    //   <div className="col-span-9 grid grid-cols-4 gap-4">
-
-    //   </div>
-    //   <div className="col-span-3">
-    //     <SideNav />
-    //   </div>
-    // </div>
+export default async function page() {
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/public/v2/posts?page=2`
   );
+  response.data.forEach((element) => {
+    element.category = getRandomCategory();
+  });
+  return <Home data={response.data} />;
 }
-
-export default Home;

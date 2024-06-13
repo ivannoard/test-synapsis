@@ -1,8 +1,9 @@
 import { Transition } from "@headlessui/react";
+import { X } from "lucide-react";
 import React from "react";
 
 function Modal(props: any) {
-  const { onClick, children, isOpen, ...rest } = props;
+  const { onClick, children, isOpen, name, ...rest } = props;
   return (
     <Transition
       show={isOpen}
@@ -18,8 +19,12 @@ function Modal(props: any) {
           className="bg-black opacity-40 absolute z-[10] left-0 right-0 top-0 bottom-0"
           onClick={onClick}
         ></div>
-        <div className="card bg-white w-1/2 mx-auto p-5 rounded-md border shadow-md animate-swoosh_from_top z-[10]">
-          {children}
+        <div className="card bg-white w-10/12 lg:w-1/2 mx-auto p-5 rounded-md border shadow-md animate-swoosh_from_top z-[10]">
+          <div className="title flex justify-between items-center pb-2 border-b-2">
+            <h4>{name}</h4>
+            <X size={20} className="cursor-pointer" onClick={onClick} />
+          </div>
+          <div className="mt-2">{children}</div>
         </div>
       </div>
     </Transition>

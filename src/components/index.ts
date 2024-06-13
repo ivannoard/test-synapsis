@@ -6,3 +6,6 @@ export { default as CardHeader } from "./CardHeader";
 export { default as CardUserProfile } from "./CardUserProfile";
 export { default as CardUser } from "./CardUser";
 export { default as Modal } from "./Modal";
+export { default as Home } from "./client/Home";
+export { default as Blog } from "./client/Blog";
+export { default as BlogDetail } from "./client/BlogDetail";

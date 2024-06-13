@@ -1,23 +1,16 @@
-import { Card } from "@/components";
+import { Blog, Card } from "@/components";
+import API from "@/services/axiosInstance";
+import { getRandomCategory } from "@/utils";
+import { DataType } from "@/utils/typeinterface";
+import axios from "axios";
 import React from "react";
 
-function page() {
-  return (
-    <div className="col-span-12 lg:col-span-9">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-      </div>
-    </div>
+export default async function page() {
+  const response = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/public/v2/posts?page=1`
   );
+  response.data.forEach((element) => {
+    element.category = getRandomCategory();
+  });
+  return <Blog data={response.data} />;
 }
-
-export default page;

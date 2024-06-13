@@ -4,8 +4,7 @@ import React from "react";
 
 function Sidenav() {
   const router = usePathname();
-  // console.log(router.split("/"));
-  console.log(router.split("/")[2] === undefined || router !== "/user");
+
   return (
     <>
       {router.split("/")[2] === undefined && router !== "/user" && (

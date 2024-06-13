@@ -9,16 +9,61 @@ import {
   Twitter,
 } from "lucide-react";
 import Link from "next/link";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import React from "react";
 
 function UserPage() {
+  const route = useSearchParams();
+  const query = route.get("name");
   const [menuActive, setMenuActive] = React.useState(null);
-  const [isShowModal, setIsShowModal] = React.useState(false);
+  const [isShowAddModal, setIsShowAddModal] = React.useState(false);
+  const [isShowEditModal, setIsShowEditModal] = React.useState(false);
+  const [isShowDeleteModal, setIsShowDeleteModal] = React.useState(false);
+
+  console.log(query);
+
   return (
     <>
-      {isShowModal && (
-        <Modal isOpen={isShowModal} onClick={() => setIsShowModal(false)}>
-          asd
+      {isShowAddModal && (
+        <Modal
+          name={"Add New User"}
+          isOpen={isShowAddModal}
+          onClick={() => setIsShowAddModal(false)}
+        >
+          add
+        </Modal>
+      )}
+      {isShowEditModal && (
+        <Modal
+          isOpen={isShowEditModal}
+          onClick={() => setIsShowEditModal(false)}
+          name={"Edit User"}
+        >
+          edit
+        </Modal>
+      )}
+      {isShowDeleteModal && (
+        <Modal
+          isOpen={isShowDeleteModal}
+          onClick={() => setIsShowDeleteModal(false)}
+          name={"Delete User"}
+        >
+          <h4 className="text-xl my-4">
+            Are yout sure want to delete this user?
+          </h4>
+          <div className="buttons flex w-full justify-end gap-4">
+            <button className="py-1 rounded-md bg-white border text-red-500 border-red-500 w-1/6 hover:bg-red-600 hover:text-white transition">
+              Cancel
+            </button>
+            <button className="py-1 rounded-md bg-red-500 text-white border border-red-500 w-1/6 hover:bg-red-600 transition">
+              Yes
+            </button>
+          </div>
         </Modal>
       )}
       <div className="col-span-12">
@@ -46,10 +91,16 @@ function UserPage() {
                 Additional Info
               </h1>
               <div className="buttons flex items-center gap-2 lg:hidden">
-                <div className="w-[30px] h-[30px] bg-yellow-500 rounded-md flex items-center justify-center text-white">
+                <div
+                  onClick={() => setIsShowEditModal(true)}
+                  className="w-[30px] h-[30px] bg-yellow-500 rounded-md flex items-center justify-center text-white"
+                >
                   <Pencil size={20} />
                 </div>
-                <div className="w-[30px] h-[30px] bg-red-500 rounded-md flex items-center justify-center text-white">
+                <div
+                  onClick={() => setIsShowDeleteModal(true)}
+                  className="w-[30px] h-[30px] bg-red-500 rounded-md flex items-center justify-center text-white"
+                >
                   <Trash size={20} />
                 </div>
               </div>
@@ -67,10 +118,16 @@ function UserPage() {
               See All Posts
             </Link>
             <div className="buttons hidden lg:flex justify-center items-center gap-4 mt-4">
-              <button className="py-1 rounded-md bg-white border w-1/4">
+              <button
+                className="py-1 rounded-md bg-white border w-1/4"
+                onClick={() => setIsShowEditModal(true)}
+              >
                 Edit
               </button>
-              <button className="py-1 rounded-md bg-white border w-1/4">
+              <button
+                className="py-1 rounded-md bg-white border w-1/4"
+                onClick={() => setIsShowDeleteModal(true)}
+              >
                 Delete
               </button>
             </div>
@@ -81,7 +138,7 @@ function UserPage() {
             <h4 className="font-semibold text-xl">Other Users</h4>
             <button
               className="px-8 py-1.5 border rounded-md bg-slate-900 text-white font-semibold"
-              onClick={() => setIsShowModal(true)}
+              onClick={() => setIsShowAddModal(true)}
             >
               + Add User
             </button>
