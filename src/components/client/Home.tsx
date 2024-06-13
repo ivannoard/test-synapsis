@@ -3,8 +3,12 @@ import React from "react";
 import Card from "../Card";
 import { DataType } from "@/utils/typeinterface";
 
-function Home({ data }) {
-  const [dataHome, setDataHome] = React.useState<DataType[]>(data);
+type Props = {
+  data: DataType[];
+};
+
+function Home({ data }: Props) {
+  const [dataHome, setDataHome] = React.useState(data);
 
   // async function getData() {
   //   try {
@@ -30,7 +34,8 @@ function Home({ data }) {
     <>
       <div className="mt-4 col-span-12 lg:col-span-9">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {data && data.map((item) => <Card key={item.id} data={item} />)}
+          {data &&
+            data.map((item: DataType) => <Card key={item.id} data={item} />)}
         </div>
       </div>
     </>

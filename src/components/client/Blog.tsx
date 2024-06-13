@@ -1,11 +1,10 @@
 "use client";
 import React from "react";
 import Card from "../Card";
-import { DataType } from "@/utils/typeinterface";
+import { DataType, ResponseDataType } from "@/utils/typeinterface";
 
-function Blog({ data }) {
+function Blog({ data }: any) {
   const [dataBlog, setDataBlog] = React.useState<DataType[]>(data);
-  console.log(data);
 
   // async function getData() {
   //   try {
@@ -24,7 +23,8 @@ function Blog({ data }) {
   return (
     <div className="col-span-12 lg:col-span-9">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {data && data.map((item) => <Card key={item.id} data={item} />)}
+        {data &&
+          data.map((item: DataType) => <Card key={item.id} data={item} />)}
       </div>
     </div>
   );

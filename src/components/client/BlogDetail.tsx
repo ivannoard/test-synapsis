@@ -3,11 +3,24 @@ import React from "react";
 import CardUserProfile from "../CardUserProfile";
 import API from "@/services/axiosInstance";
 import axios from "axios";
+import { DataType } from "@/utils/typeinterface";
 
-function BlogDetail({ data }) {
-  const [commentData, setCommentData] = React.useState([]);
+type CommentType = {
+  id: number;
+  post_id: number;
+  name: string;
+  email: string;
+  body: string;
+};
 
-  async function getComments(blog_id) {
+type Props = {
+  data: DataType;
+};
+
+function BlogDetail({ data }: Props) {
+  const [commentData, setCommentData] = React.useState<CommentType[]>([]);
+
+  async function getComments(blog_id: number) {
     try {
       const response = await axios.get(`/api/comments?post_id=${blog_id}`);
       setCommentData(response.data.data);
@@ -17,7 +30,7 @@ function BlogDetail({ data }) {
   }
 
   React.useEffect(() => {
-    getComments(data.id);
+    getComments(data.id as number);
   }, [data.id]);
 
   return (

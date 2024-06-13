@@ -1,10 +1,17 @@
 import API from "@/services/axiosInstance";
 import { getRandomCategory } from "@/utils";
-import axios from "axios";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
 
-export async function GET(req: any, res: NextApiResponse) {
-  const { searchParams } = new URL(req.url);
+type ResponseDataType = {
+  id: number;
+  user_id: number;
+  title: string;
+  body: string;
+  category: string;
+};
+
+export async function GET(req: NextApiRequest) {
+  const { searchParams } = new URL(req.url as string);
   const page = searchParams.get("page");
 
   const response = await API.get(`/public/v2/posts`, {
@@ -13,7 +20,7 @@ export async function GET(req: any, res: NextApiResponse) {
     },
   });
 
-  response.data.forEach((element) => {
+  response.data.forEach((element: ResponseDataType) => {
     element.category = getRandomCategory();
   });
 
