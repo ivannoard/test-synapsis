@@ -4,7 +4,9 @@ import { NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url as string);
   const id = searchParams.get("post_id");
-  const response = await API.get(`/public/v2/posts/${id}/comments`);
+  const response = await API.get(
+    `${process.env.NEXT_PUBLIC_API}/public/v2/posts/${id}/comments`
+  );
   console.log(response);
 
   return Response.json({

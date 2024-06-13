@@ -6,11 +6,9 @@ import axios from "axios";
 import React from "react";
 
 export default async function page() {
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/public/v2/posts?page=1`
-  );
-  response.data.forEach((element: ResponseDataType) => {
+  const response = await API.get(`/api/post?page=1`);
+  response.data.data.forEach((element: ResponseDataType) => {
     element.category = getRandomCategory();
   });
-  return <Blog data={response.data} />;
+  return <Blog data={response.data.data} />;
 }

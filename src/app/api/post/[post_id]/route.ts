@@ -11,24 +11,17 @@ type ResponseDataType = {
   category: string;
 };
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url as string);
-  const page = searchParams.get("page");
-  // const post_id = searchParams.get('post_id')
-  console.log(req.url);
-
+export async function GET(
+  req: NextRequest,
+  { params: { post_id } }: { params: { post_id: string } }
+) {
   const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_API}/public/v2/posts`,
-    {
-      params: {
-        page,
-      },
-    }
+    `${process.env.NEXT_PUBLIC_API}/public/v2/posts/${post_id}`
   );
 
-  response.data.forEach((element: ResponseDataType) => {
-    element.category = getRandomCategory();
-  });
+  // response.data.data.forEach((element: ResponseDataType) => {
+  //   element.category = getRandomCategory();
+  // });
 
   // const unsplash = await axios.get(
   //   `https://api.unsplash.com/photos/random?client_id=${process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY}&count=10&topics=blog`
@@ -43,11 +36,5 @@ export async function GET(req: NextRequest) {
   return Response.json({
     message: "Successfully retrieved data!",
     data: response.data,
-    pagination: {
-      page: Number(response.headers["x-pagination-page"]),
-      limit: Number(response.headers["x-pagination-limit"]),
-      total: Number(response.headers["x-pagination-total"]),
-      pages: Number(response.headers["x-pagination-pages"]),
-    },
   });
 }
