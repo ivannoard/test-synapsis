@@ -26,7 +26,7 @@ function HeaderLayout() {
 
   async function getData() {
     try {
-      const response = await axios.get(`/api/post?page=1`);
+      const response = await API.get(`/api/post?page=1`);
       if (response.status === 200) {
         setData(response.data.data);
       }

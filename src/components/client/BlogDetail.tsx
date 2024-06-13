@@ -22,7 +22,7 @@ function BlogDetail({ data }: Props) {
 
   async function getComments(blog_id: number) {
     try {
-      const response = await axios.get(`/api/comments?post_id=${blog_id}`);
+      const response = await API.get(`/api/comments?post_id=${blog_id}`);
       setCommentData(response.data.data);
     } catch (e) {
       console.log(e);

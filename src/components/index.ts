@@ -9,3 +9,4 @@ export { default as Modal } from "./Modal";
 export { default as Home } from "./client/Home";
 export { default as Blog } from "./client/Blog";
 export { default as BlogDetail } from "./client/BlogDetail";
+export { default as User } from "./client/User";
