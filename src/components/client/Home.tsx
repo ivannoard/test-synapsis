@@ -1,8 +1,7 @@
 "use client";
+import { DataType, PaginationType } from "@/utils/typeinterface";
 import React from "react";
 import Card from "../Card";
-import { DataType, PaginationType } from "@/utils/typeinterface";
-import ReactPaginate from "react-paginate";
 import Pagination from "../Pagination";
 
 type Props = {
@@ -11,24 +10,10 @@ type Props = {
 };
 
 function Home({ data, pagination }: Props) {
-  // async function getData() {
-  //   try {
-  //     const response = await axios.get("/api/post?page=2");
-  //     if (response.status === 200) {
-  //       setData(response.data.data);
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
-
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // React.useEffect(() => {
-  //   getData();
-  // }, []);
   return (
     <>
       <div className="mt-4 col-span-12 lg:col-span-9">

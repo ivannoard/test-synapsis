@@ -1,9 +1,8 @@
 "use client";
+import API from "@/services/axiosInstance";
+import { DataType } from "@/utils/typeinterface";
 import React from "react";
 import CardUserProfile from "../CardUserProfile";
-import API from "@/services/axiosInstance";
-import axios from "axios";
-import { DataType } from "@/utils/typeinterface";
 
 type CommentType = {
   id: number;

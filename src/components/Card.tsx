@@ -1,10 +1,7 @@
 "use client";
-import React from "react";
-import Button from "./Button";
+import { CardProps } from "@/utils/typeinterface";
 import { useRouter } from "next/navigation";
 import CardUserProfile from "./CardUserProfile";
-import { CardProps } from "@/utils/typeinterface";
-import Image from "next/image";
 
 function Card({ data }: CardProps) {
   const router = useRouter();

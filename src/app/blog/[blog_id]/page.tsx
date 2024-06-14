@@ -1,8 +1,6 @@
-import { BlogDetail, CardUserProfile } from "@/components";
-import API from "@/services/axiosInstance";
+import { BlogDetail } from "@/components";
 import { getRandomCategory } from "@/utils";
 import axios from "axios";
-import React from "react";
 
 // export const dynamic = "force-dynamic";
 // export const fetchCache = "force-no-store";

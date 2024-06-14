@@ -68,8 +68,6 @@ function Navbar() {
                   <h4 className="font-semibold text-sm">{item.name}</h4>
                 </Link>
               ))}
-              {/* <button>Logout</button>
-              <button>Signin</button> */}
             </div>
           </div>
           {isShowMobile && (

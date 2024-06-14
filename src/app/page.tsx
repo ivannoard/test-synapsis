@@ -1,5 +1,4 @@
 import { Home } from "@/components";
-import API from "@/services/axiosInstance";
 import { getRandomCategory } from "@/utils";
 import { ResponseDataType } from "@/utils/typeinterface";
 import axios from "axios";

@@ -1,9 +1,6 @@
 "use client";
-import { usePathname } from "next/navigation";
-import React from "react";
 
 function LoadingPage() {
-  const router = usePathname();
   return (
     <>
       <div className="w-full min-h-screen bg-black bg-opacity-20 fixed top-0 left-0 z-[30] flex justify-center items-center">

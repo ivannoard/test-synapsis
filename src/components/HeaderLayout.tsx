@@ -1,5 +1,6 @@
 "use client";
 import API from "@/services/axiosInstance";
+import { DataType } from "@/utils/typeinterface";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import Slider from "react-slick";
@@ -7,9 +8,6 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import CardHeader from "./CardHeader";
 import CardUserProfile from "./CardUserProfile";
-import axios from "axios";
-import { DataType } from "@/utils/typeinterface";
-import Image from "next/image";
 
 function HeaderLayout() {
   const router = useRouter();

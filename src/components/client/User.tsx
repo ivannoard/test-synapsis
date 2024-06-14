@@ -2,6 +2,7 @@
 import { Modal } from "@/components";
 import API from "@/services/axiosInstance";
 import { PaginationType } from "@/utils/typeinterface";
+import { Formik } from "formik";
 import {
   Facebook,
   Instagram,
@@ -10,16 +11,11 @@ import {
   Trash,
   Twitter,
 } from "lucide-react";
-import Link from "next/link";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
-import Pagination from "../Pagination";
 import toast from "react-hot-toast";
+import { object, string } from "yup";
+import Pagination from "../Pagination";
 
 type UserType = {
   id?: number;
@@ -34,40 +30,37 @@ type Props = {
   pagination: PaginationType;
 };
 
+let userSchema = object({
+  name: string().required("Name must not be empty!"),
+  email: string()
+    .email("Email is not valid!")
+    .required("Email must not be empty!"),
+  gender: string()
+    .required("Gender must not be empty!")
+    .oneOf(["male", "female"])
+    .label("Choose Gender"),
+  status: string()
+    .required("Status must not be empty!")
+    .oneOf(["active", "inactive"])
+    .label("Choose Status"),
+});
+
 function User({ data, pagination }: Props) {
   const route = useSearchParams();
   const router = useRouter();
-  const query = route.get("name");
   const [isShowAddModal, setIsShowAddModal] = React.useState(false);
   const [isShowEditModal, setIsShowEditModal] = React.useState(false);
   const [isShowDeleteModal, setIsShowDeleteModal] = React.useState(false);
   const [isShowModalAllPost, setIsShowModalAllPost] = React.useState(false);
   const [activeData, setActiveData] = React.useState<UserType>(data[0]);
-  const [addData, setAddData] = React.useState({});
-  const [updateData, setUpdateData] = React.useState({} as UserType);
   const [listPosts, setListPosts] = React.useState<{ title: string }[]>([]);
   const [isLoadPost, setIsLoadPost] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  function handleChange(e: any) {
-    setAddData({
-      ...addData,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  function handleUpdateChange(e: any) {
-    setUpdateData({
-      ...updateData,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  async function handleSubmitAddUser(e: any) {
-    e.preventDefault();
+  async function handleSubmitAddUser(val: any) {
     try {
       setIsLoading(true);
-      const response = await API.post("/api/users", addData);
+      const response = await API.post("/api/users", val);
       if (response.status === 200) {
         router.refresh();
         setIsShowAddModal(false);
@@ -88,8 +81,6 @@ function User({ data, pagination }: Props) {
       setIsLoading(true);
       const response = await API.delete(`/api/users/${activeData.id}`);
       if (response.status === 200) {
-        // updateData();
-        // setIsShowDeleteModal(false);
         router.refresh();
         setActiveData(data[0]);
         setIsShowDeleteModal(false);
@@ -104,18 +95,10 @@ function User({ data, pagination }: Props) {
     }
   }
 
-  async function handleUpdate(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleUpdate(val: any) {
     try {
       setIsLoading(true);
-      const data = {
-        name: updateData.name ? updateData?.name : activeData.name,
-        email: updateData.email ? updateData?.email : activeData.email,
-        status: updateData.status ? updateData?.status : activeData.status,
-        gender: updateData.gender ? updateData?.gender : activeData.gender,
-      };
-      console.log(data);
-      const response = await API.put(`/api/users/${activeData.id}`, data);
+      const response = await API.put(`/api/users/${activeData.id}`, val);
       if (response.status === 200) {
         router.refresh();
         setIsShowEditModal(false);
@@ -166,69 +149,96 @@ function User({ data, pagination }: Props) {
           isOpen={isShowAddModal}
           onClick={() => setIsShowAddModal(false)}
         >
-          <form className="flex flex-col gap-2" onSubmit={handleSubmitAddUser}>
-            <div className="field-group flex flex-col gap-1">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                className="border rounded-md py-1 px-3"
-                name="name"
-                onChange={handleChange}
-                placeholder="Input a name. . ."
-              />
-            </div>
-            <div className="field-group flex flex-col gap-1">
-              <label htmlFor="email">Email</label>
-              <input
-                type="text"
-                className="border rounded-md py-1 px-3"
-                name="email"
-                onChange={handleChange}
-                placeholder="Input an email. . ."
-              />
-            </div>
-            <div className="field-group flex flex-col gap-1">
-              <label htmlFor="gender">Gender</label>
-              <select
-                name="gender"
-                id="gender"
-                className="border rounded-md py-2 px-3 appearance-none"
-                onChange={handleChange}
-                defaultValue={"Choose Gender"}
-              >
-                <option disabled>Choose Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-              {/* <input
-                type="text"
-                className="border rounded-md py-1 px-3"
-                name="gender"
-                onChange={handleChange}
-              /> */}
-            </div>
-            <div className="field-group flex flex-col gap-1">
-              <label htmlFor="status">Status</label>
-              <select
-                name="status"
-                id="status"
-                className="border rounded-md py-2 px-3 appearance-none"
-                onChange={handleChange}
-                defaultValue={"Choose Status"}
-              >
-                <option disabled>Choose Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 bg-black text-white rounded-md font-semibold"
-              disabled={isLoading}
-            >
-              Add New User
-            </button>
-          </form>
+          <Formik
+            initialValues={{
+              email: "",
+              name: "",
+              gender: "Choose Gender",
+              status: "Choose Status",
+            }}
+            validationSchema={userSchema}
+            onSubmit={(values) => handleSubmitAddUser(values)}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+              <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+                <div className="field-group flex flex-col gap-1">
+                  <label htmlFor="name">Name</label>
+                  <input
+                    type="text"
+                    className="border rounded-md py-1 px-3"
+                    name="name"
+                    onChange={handleChange("name")}
+                    onBlur={handleBlur("name")}
+                    value={values.name}
+                    placeholder="Input a name. . ."
+                  />
+                </div>
+                {errors.name && (
+                  <p className="text-red-500 text-sm">{errors.name}</p>
+                )}
+                <div className="field-group flex flex-col gap-1">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="text"
+                    className="border rounded-md py-1 px-3"
+                    name="email"
+                    onChange={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    placeholder="Input an email. . ."
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
+                <div className="field-group flex flex-col gap-1">
+                  <label htmlFor="gender">Gender</label>
+                  <select
+                    name="gender"
+                    id="gender"
+                    className="border rounded-md py-2 px-3 appearance-none"
+                    onChange={handleChange("gender")}
+                    onBlur={handleBlur("gender")}
+                    defaultValue={"Choose Gender"}
+                    value={values.gender}
+                  >
+                    <option disabled>Choose Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+                {errors.gender && (
+                  <p className="text-red-500 text-sm">{errors.gender}</p>
+                )}
+                <div className="field-group flex flex-col gap-1">
+                  <label htmlFor="status">Status</label>
+                  <select
+                    name="status"
+                    id="status"
+                    className="border rounded-md py-2 px-3 appearance-none"
+                    onChange={handleChange("status")}
+                    onBlur={handleBlur("status")}
+                    defaultValue={"Choose Status"}
+                    value={values.status}
+                  >
+                    <option disabled>Choose Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+                {errors.status && (
+                  <p className="text-red-500 text-sm">{errors.status}</p>
+                )}
+                <button
+                  type="submit"
+                  className="w-full py-2 bg-black text-white rounded-md font-semibold"
+                  disabled={isLoading}
+                >
+                  Add New User
+                </button>
+              </form>
+            )}
+          </Formik>
         </Modal>
       )}
       {isShowEditModal && (
@@ -237,77 +247,92 @@ function User({ data, pagination }: Props) {
           onClick={() => setIsShowEditModal(false)}
           name={"Edit User"}
         >
-          <form className="flex flex-col gap-2" onSubmit={handleUpdate}>
-            <div className="field-group flex flex-col gap-1">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                className="border rounded-md py-1 px-3"
-                name="name"
-                defaultValue={activeData.name}
-                onChange={handleUpdateChange}
-              />
-            </div>
-            <div className="field-group flex flex-col gap-1">
-              <label htmlFor="email">Email</label>
-              <input
-                type="text"
-                className="border rounded-md py-1 px-3"
-                name="email"
-                defaultValue={activeData.email}
-                onChange={handleUpdateChange}
-              />
-            </div>
-            <div className="field-group flex flex-col gap-1">
-              <label htmlFor="gender">Gender</label>
-              <select
-                name="gender"
-                id="gender"
-                className="border rounded-md py-2 px-3 appearance-none"
-                onChange={handleUpdateChange}
-                defaultValue={activeData.gender}
-              >
-                <option disabled>Choose Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-              {/* <input
-                type="text"
-                className="border rounded-md py-1 px-3"
-                name="gender"
-                defaultValue={activeData.gender}
-                onChange={handleUpdateChange}
-              /> */}
-            </div>
-            <div className="field-group flex flex-col gap-1">
-              <label htmlFor="status">Status</label>
-              <select
-                name="status"
-                id="status"
-                className="border rounded-md py-2 px-3 appearance-none"
-                onChange={handleUpdateChange}
-                defaultValue={activeData.status}
-              >
-                <option disabled>Choose Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </select>
-              {/* <input
-                type="text"
-                className="border rounded-md py-1 px-3"
-                name="status"
-                defaultValue={activeData.status}
-                onChange={handleUpdateChange}
-              /> */}
-            </div>
-            <button
-              type="submit"
-              className="w-full py-2 bg-black text-white rounded-md font-semibold"
-              disabled={isLoading}
-            >
-              Update User
-            </button>
-          </form>
+          <Formik
+            initialValues={{
+              email: activeData.email,
+              name: activeData.name,
+              gender: activeData.gender,
+              status: activeData.status,
+            }}
+            validationSchema={userSchema}
+            onSubmit={(values) => handleUpdate(values)}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+              <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+                <div className="field-group flex flex-col gap-1">
+                  <label htmlFor="name">Name</label>
+                  <input
+                    type="text"
+                    className="border rounded-md py-1 px-3"
+                    name="name"
+                    defaultValue={values.name}
+                    onBlur={handleBlur("name")}
+                    onChange={handleChange("name")}
+                  />
+                </div>
+                {errors.name && (
+                  <p className="text-red-500 text-sm">{errors.name}</p>
+                )}
+                <div className="field-group flex flex-col gap-1">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="text"
+                    className="border rounded-md py-1 px-3"
+                    name="email"
+                    defaultValue={activeData.email}
+                    onBlur={handleBlur("email")}
+                    onChange={handleChange("email")}
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
+                <div className="field-group flex flex-col gap-1">
+                  <label htmlFor="gender">Gender</label>
+                  <select
+                    name="gender"
+                    id="gender"
+                    className="border rounded-md py-2 px-3 appearance-none"
+                    onChange={handleChange("gender")}
+                    onBlur={handleBlur("gender")}
+                    defaultValue={activeData.gender}
+                  >
+                    <option disabled>Choose Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+                {errors.gender && (
+                  <p className="text-red-500 text-sm">{errors.gender}</p>
+                )}
+                <div className="field-group flex flex-col gap-1">
+                  <label htmlFor="status">Status</label>
+                  <select
+                    name="status"
+                    id="status"
+                    className="border rounded-md py-2 px-3 appearance-none"
+                    onChange={handleChange("status")}
+                    onBlur={handleBlur("status")}
+                    defaultValue={activeData.status}
+                  >
+                    <option disabled>Choose Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+                {errors.status && (
+                  <p className="text-red-500 text-sm">{errors.status}</p>
+                )}
+                <button
+                  type="submit"
+                  className="w-full py-2 bg-black text-white rounded-md font-semibold"
+                  disabled={isLoading}
+                >
+                  Update User
+                </button>
+              </form>
+            )}
+          </Formik>
         </Modal>
       )}
       {isShowDeleteModal && (
@@ -319,9 +344,9 @@ function User({ data, pagination }: Props) {
           <h4 className="text-xl my-4">
             Are yout sure want to delete this user?
           </h4>
-          <div className="buttons flex w-full justify-end gap-4">
+          <div className="buttons flex w-full justify-center lg:justify-end gap-4">
             <button
-              className="py-1 rounded-md bg-white border text-red-500 border-red-500 w-1/6 hover:bg-red-600 hover:text-white transition"
+              className="py-1 rounded-md bg-white border text-red-500 border-red-500 w-1/2 lg:w-1/6 hover:bg-red-600 hover:text-white transition"
               onClick={() => setIsShowDeleteModal(false)}
             >
               Cancel
@@ -329,7 +354,7 @@ function User({ data, pagination }: Props) {
             <button
               onClick={handleDelete}
               disabled={isLoading}
-              className="py-1 rounded-md bg-red-500 text-white border border-red-500 w-1/6 hover:bg-red-600 transition"
+              className="py-1 rounded-md bg-red-500 text-white border border-red-500 w-1/2 lg:w-1/6 hover:bg-red-600 transition"
             >
               Yes
             </button>
@@ -434,7 +459,7 @@ function User({ data, pagination }: Props) {
               + Add User
             </button>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-8 gap-4 mt-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-8">
             {data &&
               data.map((item) => (
                 <div

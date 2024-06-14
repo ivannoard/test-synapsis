@@ -1,4 +1,3 @@
-import API from "@/services/axiosInstance";
 import { getRandomCategory } from "@/utils";
 import axios from "axios";
 import { NextRequest } from "next/server";
