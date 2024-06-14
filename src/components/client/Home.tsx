@@ -1,15 +1,16 @@
 "use client";
 import React from "react";
 import Card from "../Card";
-import { DataType } from "@/utils/typeinterface";
+import { DataType, PaginationType } from "@/utils/typeinterface";
+import ReactPaginate from "react-paginate";
+import Pagination from "../Pagination";
 
 type Props = {
   data: DataType[];
+  pagination: PaginationType;
 };
 
-function Home({ data }: Props) {
-  const [dataHome, setDataHome] = React.useState(data);
-
+function Home({ data, pagination }: Props) {
   // async function getData() {
   //   try {
   //     const response = await axios.get("/api/post?page=2");
@@ -25,8 +26,6 @@ function Home({ data }: Props) {
     window.scrollTo(0, 0);
   }, []);
 
-  console.log(data);
-
   // React.useEffect(() => {
   //   getData();
   // }, []);
@@ -36,6 +35,9 @@ function Home({ data }: Props) {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {data &&
             data.map((item: DataType) => <Card key={item.id} data={item} />)}
+        </div>
+        <div className="flex justify-center mt-4">
+          <Pagination pagination={pagination} path="/" />
         </div>
       </div>
     </>

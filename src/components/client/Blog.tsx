@@ -1,9 +1,19 @@
 "use client";
 import React from "react";
 import Card from "../Card";
-import { DataType, ResponseDataType } from "@/utils/typeinterface";
+import {
+  DataType,
+  PaginationType,
+  ResponseDataType,
+} from "@/utils/typeinterface";
+import Pagination from "../Pagination";
 
-function Blog({ data }: any) {
+type Props = {
+  data: DataType[];
+  pagination: PaginationType;
+};
+
+function Blog({ data, pagination }: Props) {
   const [dataBlog, setDataBlog] = React.useState<DataType[]>(data);
 
   // async function getData() {
@@ -25,6 +35,9 @@ function Blog({ data }: any) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {data &&
           data.map((item: DataType) => <Card key={item.id} data={item} />)}
+      </div>
+      <div className="flex justify-center mt-4">
+        <Pagination pagination={pagination} path="/blog" />
       </div>
     </div>
   );

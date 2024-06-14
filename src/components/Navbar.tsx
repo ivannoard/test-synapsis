@@ -1,11 +1,12 @@
 "use client";
-import { BookText, Menu, User } from "lucide-react";
+import { BookText, Menu, Search, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 function Navbar() {
   const [isShowMobile, setIsShowMobile] = React.useState(false);
+  const [inputField, setInputField] = React.useState("");
   const router = useRouter();
   const menus = [
     {
@@ -21,15 +22,21 @@ function Navbar() {
   function handleChange(e: any) {
     const value = e.target.value;
     if (e.key === "Enter" || e.keyCode === 13) {
-      console.log(value);
       router.push(`/user?name=${value}`);
+    }
+  }
+
+  function handleSearch(e: any) {
+    e.preventDefault();
+    if (inputField !== "") {
+      router.push(`/user?name=${inputField}`);
     }
   }
 
   return (
     <>
       <div className="w-full shadow-md sticky top-0 bg-white z-[30]">
-        <div className="container mx-auto p-5 flex items-center">
+        <div className="mx-auto p-5 flex items-center">
           <div className="w-8/12">
             <Link href={"/"}>
               <h4 className="text-slate-500">Synapsis Blog</h4>
@@ -75,11 +82,18 @@ function Navbar() {
                 <div className="header pb-2 border-b-2">
                   <h4 className="font-semibold text-center">Synapsis</h4>
                 </div>
-                <div className="input mt-4">
+                <div className="input mt-4 flex items-center">
                   <input
                     type="text"
-                    className="rounded-md py-1 border w-full"
+                    className="rounded-tl-md rounded-bl-md py-1 border w-full px-3"
+                    onChange={(e) => setInputField(e.target.value)}
                   />
+                  <button
+                    className="bg-gray-300 p-2 rounded-tr-md rounded-br-md"
+                    onClick={handleSearch}
+                  >
+                    <Search size={16} />
+                  </button>
                 </div>
                 <div className="menus mt-4 pb-8 border-b-2">
                   <div className="flex flex-col gap-4">

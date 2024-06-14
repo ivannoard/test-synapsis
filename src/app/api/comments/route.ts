@@ -7,8 +7,6 @@ export async function GET(req: NextRequest) {
   const response = await API.get(
     `${process.env.NEXT_PUBLIC_API}/public/v2/posts/${id}/comments`
   );
-  console.log(response);
-
   return Response.json({
     message: "Successfully retrieved data!",
     data: response.data,

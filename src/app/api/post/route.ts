@@ -14,9 +14,6 @@ type ResponseDataType = {
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url as string);
   const page = searchParams.get("page");
-  // const post_id = searchParams.get('post_id')
-  console.log(req.url);
-
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_API}/public/v2/posts`,
     {

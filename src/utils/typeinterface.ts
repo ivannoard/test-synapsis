@@ -26,3 +26,10 @@ export type ResponseDataType = {
   category: string;
   image?: string;
 };
+
+export type PaginationType = {
+  page: string;
+  pages: string;
+  limit: string;
+  total: string;
+};

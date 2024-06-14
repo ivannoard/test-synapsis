@@ -27,7 +27,6 @@ function HeaderLayout() {
   async function getData() {
     try {
       const response = await API.get(`/api/post?page=1`);
-      console.log(response);
       if (response.status === 200) {
         setData(response.data.data);
       }
