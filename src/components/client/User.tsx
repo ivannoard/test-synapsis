@@ -194,6 +194,7 @@ function User({ data, pagination }: Props) {
                 id="gender"
                 className="border rounded-md py-2 px-3 appearance-none"
                 onChange={handleChange}
+                defaultValue={"Choose Gender"}
               >
                 <option disabled>Choose Gender</option>
                 <option value="male">Male</option>
@@ -213,6 +214,7 @@ function User({ data, pagination }: Props) {
                 id="status"
                 className="border rounded-md py-2 px-3 appearance-none"
                 onChange={handleChange}
+                defaultValue={"Choose Status"}
               >
                 <option disabled>Choose Status</option>
                 <option value="active">Active</option>
