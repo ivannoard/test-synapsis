@@ -13,12 +13,14 @@ interface Props {
 function CardHeader(props: Props) {
   const router = useRouter();
   return (
-    <div
-      className="card flex gap-2 cursor-pointer"
-      onClick={() => router.push(`/blog/${props.data.id}`)}
-    >
-      <div className="rounded-md bg-red-500 min-w-[100px] lg:min-w-[150px] h-[100px] overflow-hidden">
-        {/* <Image
+    <>
+      {props.data && (
+        <div
+          className="card flex gap-2 cursor-pointer"
+          onClick={() => router.push(`/blog/${props.data.id}`)}
+        >
+          <div className="rounded-md bg-red-500 min-w-[100px] lg:min-w-[150px] h-[100px] overflow-hidden">
+            {/* <Image
           src={props.data?.image}
           alt={props.data?.title}
           width={100}
@@ -26,16 +28,18 @@ function CardHeader(props: Props) {
           loading="lazy"
           className="w-full h-[100px] min-h-[100px] object-cover"
         /> */}
-      </div>
-      <div className="header-content">
-        <h4 className="font-semibold line-clamp-1">{props.data?.title}</h4>
-        {/* <div className="header-content-bio my-2">
+          </div>
+          <div className="header-content">
+            <h4 className="font-semibold line-clamp-1">{props.data?.title}</h4>
+            {/* <div className="header-content-bio my-2">
                 <p className="text-[12px] font-semibold">Author - Category</p>
                 <p className="text-sm text-gray-500">12 Juni 2024</p>
               </div> */}
-        <p className="text-[13px] line-clamp-3">{props.data?.body}</p>
-      </div>
-    </div>
+            <p className="text-[13px] line-clamp-3">{props.data?.body}</p>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
