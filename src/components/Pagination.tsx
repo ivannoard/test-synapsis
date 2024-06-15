@@ -13,7 +13,7 @@ type Props = {
 function Pagination(props: Props) {
   const router = useRouter();
   const [active, setActive] = React.useState(1);
-  const pageNumberLimit = 10;
+  const pageNumberLimit = 5;
   const [minPageNumberLimit, setMinPageNumberLimit] = React.useState(0);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = React.useState(5);
 

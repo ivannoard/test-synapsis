@@ -3,6 +3,7 @@ import API from "@/services/axiosInstance";
 import { DataType } from "@/utils/typeinterface";
 import React from "react";
 import CardUserProfile from "../CardUserProfile";
+import { useRouter } from "next/navigation";
 
 type CommentType = {
   id: number;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 function BlogDetail({ data }: Props) {
+  const router = useRouter();
   const [commentData, setCommentData] = React.useState<CommentType[]>([]);
 
   async function getComments(blog_id: number) {
