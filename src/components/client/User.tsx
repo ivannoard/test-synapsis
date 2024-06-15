@@ -71,7 +71,6 @@ function User({ data, pagination }: Props) {
       router.refresh();
       setIsLoading(false);
       toast.error("An error occured!");
-      console.log(e);
     }
   }
 
@@ -88,7 +87,6 @@ function User({ data, pagination }: Props) {
         toast.success("Successfully delete user!");
       }
     } catch (e) {
-      console.log(e);
       router.refresh();
       setIsLoading(false);
       toast.error("An error occured!");
@@ -106,7 +104,6 @@ function User({ data, pagination }: Props) {
         toast.success("Successfully update user!");
       }
     } catch (e) {
-      console.log(e);
       router.refresh();
       setIsLoading(false);
       toast.error("An error occured!");
@@ -123,7 +120,6 @@ function User({ data, pagination }: Props) {
         // toast.success("Successfully get user posts!");
       }
     } catch (e) {
-      console.log(e);
       toast.error("An error occured!");
     }
   }

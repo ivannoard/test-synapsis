@@ -10,7 +10,6 @@ type Props = {
 };
 
 function Blog({ data, pagination }: Props) {
-  console.log(data);
   return (
     <div className="col-span-12 lg:col-span-9">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
